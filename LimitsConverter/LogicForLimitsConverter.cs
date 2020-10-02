@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace LimitsConverter
         {
 
 
-            StringBuilder sb = new StringBuilder();
+            
             byte[] buff = File.ReadAllBytes(openFilePath);
             if (buff[0] != 0x01)
             {
@@ -27,25 +28,48 @@ namespace LimitsConverter
             }
             else
             {
-                Version = BitConverter.ToString(buff, 0, 1);
-                SerialNumber = BitConverter.ToString(buff, 1, 3).Replace("-", string.Empty);
+                Version = SetVersion(buff);
+                SerialNumber = SetSerialNumber(buff);
+                Time = SetTime(buff);
 
-                var b1 = new byte[4];
-                Array.Copy(buff, 4, b1, 0, 4);
-                var b2 = b1.Reverse();
-                var time1 = BitConverter.ToInt32(b2.ToArray(), 0);
-                Time = DateTimeOffset.FromUnixTimeSeconds(time1).ToString();
-
-                Counter = BitConverter.ToString(buff, 8, 4).Replace("-", string.Empty);
-
-                for (int i = 16; i < buff.Length; i++)
-                {
-                    if (BitConverter.ToString(buff, i, 1) == "CC")
-                        sb.Append(i - 16 + " ");
-                }
-
-                ActiveProgramms = sb.ToString();
+                Counter = SetCounter(buff);
+                ActiveProgramms = SetActiveProgramms(buff);
             }
+        }
+
+       
+
+        private string SetTime(byte[]byteArrayToBuff)
+        {
+            var byteBufforToTime = new byte[4];
+            Array.Copy(byteArrayToBuff, 4, byteBufforToTime, 0, 4);
+            var correctArrayToReverseBytes = byteBufforToTime.Reverse();
+            var timeArray = BitConverter.ToInt32(correctArrayToReverseBytes.ToArray(), 0);
+            return DateTimeOffset.FromUnixTimeSeconds(timeArray).ToString();
+        }
+        private string SetVersion(byte[] byteArrayToBuff)
+        {
+            return BitConverter.ToString(byteArrayToBuff, 0, 1);
+        }
+        private string SetSerialNumber(byte[] byteArrayToBuff)
+        {
+            return BitConverter.ToString(byteArrayToBuff, 1, 3).Replace("-", string.Empty);
+        }
+        private string SetCounter(byte[] byteArrayToBuff)
+        {
+            return BitConverter.ToString(byteArrayToBuff, 8, 4).Replace("-", string.Empty);
+        }
+        private string SetActiveProgramms(byte[] byteArrayToBuff)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 16; i < byteArrayToBuff.Length; i++)
+            {
+                
+
+                if (BitConverter.ToString(byteArrayToBuff, i, 1) == "CC")
+                    sb.Append(i - 16 + " ");
+            }
+            return sb.ToString();
         }
     }
 }

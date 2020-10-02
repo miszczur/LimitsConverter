@@ -27,15 +27,20 @@ namespace LimitsConverter.Dialogs
             if (openFileDialog.ShowDialog() == true)
             {
 
-                LogicForLimitsConverter lm = new LogicForLimitsConverter(openFileDialog.FileName);
-                version.Text = lm.Version;
-                serialNumber.Text = lm.SerialNumber;
-                time.Text = lm.Time;
-                counter.Text = lm.Counter;
-                activeProgramms.Text = lm.ActiveProgramms;
+                LogicForLimitsConverter lc = new LogicForLimitsConverter(openFileDialog.FileName);
+                version.Text = lc.Version;
+                serialNumber.Text = lc.SerialNumber;
+                time.Text = lc.Time;
+                counter.Text = lc.Counter;
+                activeProgramms.Text = lc.ActiveProgramms;
 
                 
             }
+        }
+
+        private void btnCopyToClipboardClick(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(activeProgramms.Text);
         }
     }
 }

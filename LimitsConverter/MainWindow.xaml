@@ -1,7 +1,7 @@
 ﻿<Window x:Class="LimitsConverter.Dialogs.LimitsConverter"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Limits Converter" MinHeight="500" MinWidth="400" MaxHeight="500" MaxWidth="505" >
+        Title="Limits Converter" MinHeight="500" MinWidth="400" MaxHeight="500" MaxWidth="400" >
     <DockPanel Margin="10">
 
         <Grid Margin="10">
@@ -17,9 +17,11 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="8*" />
             </Grid.RowDefinitions>
-            <Button Name="btnOpenFile" Click="btnOpenFile_Click">Otwórz plik</Button>
+            <Button Name="btnOpenFile" Click="btnOpenFile_Click" Grid.Row="1" Grid.Column="0">Otwórz plik</Button>
+            <Button Name="btnCopyToClipboard" Click="btnCopyToClipboardClick" Grid.Row="3" Grid.Column="0">Kopiuj do schowka</Button>
             <Label Grid.Row="1" Grid.Column="1">Wersja:</Label>
             <TextBox Name="version" Grid.Row="1" Grid.Column="2" Margin="0,0,0,10" IsReadOnly="True"/>
             <Label Grid.Row="2" Grid.Column="1">Nr seryjny:</Label>
@@ -29,11 +31,11 @@
             <Label Grid.Row="4" Grid.Column="1">Licznik aktywacji:</Label>
             <TextBox Name="counter" Grid.Row="4" Grid.Column="2" Margin="0,0,0,10" IsReadOnly="True"/>
             
-            <Label Grid.Row="5" >Aktywne programy:</Label>
+            <Label Grid.Row="6" >Aktywne programy:</Label>
 
 
-            <TextBox Name="activeProgramms" Grid.Row="6" Grid.ColumnSpan="3" AcceptsReturn="True" 
-              IsReadOnly="True" TextWrapping="Wrap" />
+            <TextBox Name="activeProgramms" Grid.Row="7" Grid.ColumnSpan="3" AcceptsReturn="True" 
+              IsReadOnly="True" TextWrapping="Wrap"/>
         </Grid>
 
 
