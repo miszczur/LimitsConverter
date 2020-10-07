@@ -26,15 +26,28 @@ namespace LimitsConverter.Dialogs
 
             if (openFileDialog.ShowDialog() == true)
             {
+                try
+                {
+                    ProgramStatus lc = new ProgramStatus(openFileDialog.FileName);
+                    version.Text = lc.Version.ToString();
+                    serialNumber.Text = lc.SerialNumber;
+                    time.Text = lc.Time.ToString();
+                    counter.Text = lc.Counter.ToString();
 
-                LogicForLimitsConverter lc = new LogicForLimitsConverter(openFileDialog.FileName);
-                version.Text = lc.Version;
-                serialNumber.Text = lc.SerialNumber;
-                time.Text = lc.Time;
-                counter.Text = lc.Counter;
-                activeProgramms.Text = lc.ActiveProgramms;
+                    StringBuilder sb = new StringBuilder();
 
-                
+                    foreach (var item in lc.ActiveProgramms)
+                    {
+
+                        sb.Append(item + " ");
+                    }
+                    activeProgramms.Text = sb.ToString();
+                }
+                catch(ArgumentException)
+                {
+                    version.Text = "Zła wersja";
+                }
+
             }
         }
 
